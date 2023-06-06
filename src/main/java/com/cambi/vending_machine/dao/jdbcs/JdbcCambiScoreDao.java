@@ -2,12 +2,17 @@ package com.cambi.vending_machine.dao.jdbcs;
 
 import com.cambi.vending_machine.dao.interfaces.CambiScoreDao;
 import com.cambi.vending_machine.model.product.Product;
+import com.cambi.vending_machine.model.product.ProductNutrient;
+import com.cambi.vending_machine.model.product.ProductNutrientGroup;
 import com.cambi.vending_machine.model.stack.Nutrient;
 import com.cambi.vending_machine.model.stack.NutrientGroup;
 import com.cambi.vending_machine.model.stack.NutrientRange;
 import com.cambi.vending_machine.model.stack.PreferenceStack;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
 
+@Component
 public class JdbcCambiScoreDao implements CambiScoreDao {
     private final JdbcTestDao testDao;
 
@@ -24,37 +29,66 @@ public class JdbcCambiScoreDao implements CambiScoreDao {
 //    }
 
     @Override
-    public double GetCambiScore() {
-        PreferenceStack preferenceStack = testDao.getPreferenceStack(1);
+    public double getCambiScore() {
+
+        // get product
         Product product = testDao.getProduct(1);
-        NutrientGroup macro = preferenceStack.getNutrientGroupByType("macro");
-        System.out.println(macro.toString());
+        PreferenceStack preferenceStack = testDao.getPreferenceStack(1);
 
-        double macroScore = 0.0;
-        double sumScores = 0.0;
+        // set cambi score to 0
+        double cambiScore = 0;
 
-        if (macro != null) {
-            for (Nutrient nutrient : macro.getNutrients()) {
-                for (NutrientRange range : nutrient.getRanges()) {
-                    // Check if the macro score falls within the range
-                    if (macroScore >= range.getMin() && macroScore <= range.getMax()) {
-                        // Add the score to the sumScores variable
-                        sumScores += range.getScore();
-                        // Break the loop since we found the matching range
-                        break;
-                    }
-                }
-            }
+        String[] nutrientGroups = {"macro", "micro", "ingredient"};
+        for (String nutrientGroup : nutrientGroups) {
+            NutrientGroup stackNutrientGroup = preferenceStack.getNutrientGroupByName(nutrientGroup);
+            ProductNutrientGroup productNutrientGroup = product.getNutrientGroupByName(nutrientGroup);
+            double nutrientScore = getNutrientScore(stackNutrientGroup, productNutrientGroup);
+            cambiScore += nutrientScore * stackNutrientGroup.getWeight();
+            System.out.println(nutrientGroup + " "+ nutrientScore);
         }
-        System.out.println(macroScore +  " " + sumScores);
 
-
-        return 0;
+       return 10*cambiScore;
     }
 
 
 
+    private double getNutrientScore(NutrientGroup nutrientGroup, ProductNutrientGroup productNutrientGroup) {
+            List<ProductNutrient> productNutrients = productNutrientGroup.getProductNutrients();
+
+            for (ProductNutrient productNutrient : productNutrients) {
+                String nutrientName = productNutrient.getName();
+                double nutrientAmount = productNutrient.getAmount();
+
+                // Find the corresponding Nutrient in the NutrientGroup
+                Nutrient nutrient = null;
+                for (Nutrient n : nutrientGroup.getNutrients()) {
+                    if (n.getName().equals(nutrientName)) {
+                        nutrient = n;
+                        break;
+                    }
+                }
+
+                if (nutrient != null) {
+                    // Find the corresponding NutrientRange for the nutrient amount
+                    NutrientRange nutrientRange = null;
+                    for (NutrientRange range : nutrient.getRanges()) {
+                        if (nutrientAmount >= range.getMin() && nutrientAmount <= range.getMax()) {
+                            nutrientRange = range;
+                            break;
+                        }
+                    }
+
+                    if (nutrientRange != null) {
+                        System.out.println("get score " + nutrientRange.getScore());
+                        return nutrientRange.getScore();
+                    }
+                }
+            }
+
+            return 0.0; // Return a default score if no range is found
+        }
 
 
+    }
 
-}
+

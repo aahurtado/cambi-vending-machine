@@ -32,9 +32,9 @@ public class PreferenceStack{
         this.userId = userId;
     }
 
-    public NutrientGroup getNutrientGroupByType(String nutrientGroupType) {
+    public NutrientGroup getNutrientGroupByName(String nutrientgroupName) {
         for (NutrientGroup nutrientGroup : nutrientGroups) {
-            if (nutrientGroup.getNutrientGroup().equalsIgnoreCase(nutrientGroupType)) {
+            if (nutrientGroup.getNutrientGroup().equalsIgnoreCase(nutrientgroupName)) {
                 return nutrientGroup;
             }
         }

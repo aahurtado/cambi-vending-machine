@@ -33,9 +33,14 @@ public class TestController {
     public String preferenceStack() {
         PreferenceStack result = testDao.getPreferenceStack(1);
         //System.out.println(result);
-        cambiScoreDao.GetCambiScore();
+        cambiScoreDao.getCambiScore();
         return result.toString();
     }
+    @GetMapping("/score")
+    public double cambiScore() {
+        return cambiScoreDao.getCambiScore();
+    }
+
 
 
 }

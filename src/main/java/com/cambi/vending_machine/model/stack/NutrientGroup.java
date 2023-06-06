@@ -3,13 +3,13 @@ package com.cambi.vending_machine.model.stack;
 import java.util.List;
 
 public class NutrientGroup {
-    private String nutrientGroupType;
+    private String nutrientGroupName;
     private double weight;
     private List<Nutrient> nutrients;
 
     public NutrientGroup(){};
     public NutrientGroup(String nutrientGroup, double weight, List<Nutrient> nutrientRanges) {
-        this.nutrientGroupType = nutrientGroup;
+        this.nutrientGroupName = nutrientGroup;
         this.weight = weight;
         this.nutrients = nutrientRanges;
     }
@@ -23,11 +23,11 @@ public class NutrientGroup {
     }
 
     public String getNutrientGroup() {
-        return nutrientGroupType;
+        return nutrientGroupName;
     }
 
     public void setNutrientGroup(String nutrientGroup) {
-        this.nutrientGroupType = nutrientGroup;
+        this.nutrientGroupName = nutrientGroup;
     }
 
     public void setNutrients(List<Nutrient> nutrients) {
@@ -41,7 +41,7 @@ public class NutrientGroup {
     @Override
     public String toString() {
         return "NutrientGroup{" +
-                "nutrientGroupType='" + nutrientGroupType + '\'' +
+                "nutrientGroupType='" + nutrientGroupName + '\'' +
                 ", weight=" + weight +
                 ", nutrients=" + nutrients +
                 '}';

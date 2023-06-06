@@ -5,6 +5,7 @@ public class NutrientRange {
     private int max;
     private double score;
 
+
     public NutrientRange(){};
     public NutrientRange(int min, int max, double score) {
         this.min = min;
