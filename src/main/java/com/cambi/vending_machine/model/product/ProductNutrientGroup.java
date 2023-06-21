@@ -31,6 +31,13 @@ public class ProductNutrientGroup {
         return productNutrientName;
     }
 
+    @Override
+    public String toString() {
+        return "ProductNutrientGroup{" +
+                "productNutrientName='" + productNutrientName + '\'' +
+                ", productNutrients=" + productNutrientsGroups +
+                '}';
+    }
 
 
 }

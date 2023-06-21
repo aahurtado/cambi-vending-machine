@@ -1,125 +1,47 @@
--- Drop tables if they exist
-DROP TABLE IF EXISTS preference_stack_nutrient_group CASCADE;
-DROP TABLE IF EXISTS preference_stack CASCADE;
-DROP TABLE IF EXISTS nutrient_range CASCADE;
-DROP TABLE IF EXISTS nutrient CASCADE;
-DROP TABLE IF EXISTS nutrient_group CASCADE;
-DROP TABLE IF EXISTS product CASCADE;
-DROP TABLE IF EXISTS product_nutrient CASCADE;
-DROP TABLE IF EXISTS product_nutrient_group CASCADE;
-
--- Create the nutrient_group table
 CREATE TABLE nutrient_group (
-  nutrient_group_id SERIAL PRIMARY KEY,
-  group_name VARCHAR(255),
-  weight DOUBLE PRECISION
+	nutrient_group_id SERIAL PRIMARY KEY,
+	nutrient_group_name ENUM('macro', 'micro', 'ingredient') NOT NULL
 );
 
--- Create the preference_stack table
-CREATE TABLE preference_stack (
-  id SERIAL PRIMARY KEY,
-  user_id INT
-);
-
--- Create the preference_stack_nutrient_group table
-CREATE TABLE preference_stack_nutrient_group (
-  preference_stack_id INT,
-  nutrient_group_id INT,
-  FOREIGN KEY (preference_stack_id) REFERENCES preference_stack (id),
-  FOREIGN KEY (nutrient_group_id) REFERENCES nutrient_group (nutrient_group_id)
-);
-
--- Create the nutrient table
 CREATE TABLE nutrient (
-  id SERIAL PRIMARY KEY,
-  nutrient_group_id INT,
-  name VARCHAR(255),
-  unit VARCHAR(255),
-  FOREIGN KEY (nutrient_group_id) REFERENCES nutrient_group (nutrient_group_id)
+	nutrient_id SERIAL PRIMARY KEY,
+	nutrient_name VARCHAR(50) NOT NULL,
+	unit ENUM('g', 'mg', 'μg', 'oz', NULL),
+	nutrient_group_id INT,
+	FOREIGN KEY (nutrient_group_id) REFERENCES nutrient_group (nutrient_group_id)
 );
 
--- Create the nutrient_range table
-CREATE TABLE nutrient_range (
-  id SERIAL PRIMARY KEY,
-  nutrient_id INT,
-  min INT,
-  max INT,
-  score DOUBLE PRECISION,
-  FOREIGN KEY (nutrient_id) REFERENCES nutrient (id)
-);
-
--- Create the product table
 CREATE TABLE product (
-  id SERIAL PRIMARY KEY,
-  gtin_upc VARCHAR(255)
+	product_id SERIAL PRIMARY KEY,
+	gtin_upc VARCHAR(14) NOT NULL
 );
 
--- Create the product_nutrient_group table
-CREATE TABLE product_nutrient_group (
-  id SERIAL PRIMARY KEY,
-  product_id INT,
-  nutrient_group_id INT,
-  FOREIGN KEY (product_id) REFERENCES product (id),
-  FOREIGN KEY (nutrient_group_id) REFERENCES nutrient_group (nutrient_group_id)
-);
-
--- Create the product_nutrient table
 CREATE TABLE product_nutrient (
-  id SERIAL PRIMARY KEY,
-  product_id INT,
-  nutrient_id INT,
-  name VARCHAR(255),
-  unit VARCHAR(255),
-  amount DOUBLE PRECISION,
-  FOREIGN KEY (product_id) REFERENCES product (id),
-  FOREIGN KEY (nutrient_id) REFERENCES nutrient (id)
+	amount INT,
+	product_id INT,
+	nutrient_id INT,
+	FOREIGN KEY (product_id) REFERENCES product (product_id),
+	FOREIGN KEY (nutrient_id) REFERENCES nutrient (nutrient_id)
 );
 
--- Insert sample data into the nutrient_group table
-INSERT INTO nutrient_group (group_name, weight)
-VALUES ('macro', 0.5),
-       ('micro', 0.3),
-       ('ingredient', 0.2);
+CREATE TABLE preference (
+	preference_id SERIAL PRIMARY KEY,
+	preference_name VARCHAR(50),
+	priority ENUM('0', '1', '2', '3') NOT NULL
+);
 
--- Insert sample data into the nutrient table
-INSERT INTO nutrient (nutrient_group_id, name, unit)
-VALUES (1, 'protein', 'g'),
-       (1, 'iron', 'mg'),
-       (3, 'seed oil', NULL);
-
--- Insert sample data into the nutrient_range table
-INSERT INTO nutrient_range (nutrient_id, min, max, score)
-VALUES (1, 0, 10, 0.2),
-       (1, 11, 20, 0.5),
-       (1, 21, 1000000, 0.7),
-       (2, 0, 5, 0.2),
-       (2, 6, 15, 0.5),
-       (2, 16, 1000000, 0.7);
-
--- Insert sample data into the product table
-INSERT INTO product (gtin_upc)
-VALUES ('1');
-
--- Insert sample data into the product_nutrient_group table
-INSERT INTO product_nutrient_group (product_id, nutrient_group_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3);
-
-INSERT INTO product_nutrient (product_id, nutrient_id, name, unit, amount)
-VALUES (1, 1, 'protein', 'g', 50.0),
-       (1, 2, 'iron', 'mg', 0),
-       (1, 3, NULL, NULL, NULL);
+CREATE TABLE nutrient_range (
+	minimum DECIMAL(5, 2),
+	maximum DECIMAL(5, 2),
+	slope DECIMAL(5, 2),
+	preference_id INT,
+	nutrient_id INT,
+	FOREIGN KEY (preference_id) REFERENCES preference (preference_id),
+	FOREIGN KEY (nutrient_id) REFERENCES nutrient (nutrient_id)
+);
 
 
 
--- Insert sample data into the preference_stack table
-INSERT INTO preference_stack (user_id)
-VALUES (1);
 
--- Insert sample data into the preference_stack_nutrient_group table
-INSERT INTO preference_stack_nutrient_group (preference_stack_id, nutrient_group_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3);
-
+-- nutrient group table table would only include these 3 do I use ENUM or make it read only somehow
+-- product table ups are at max 14 chars is this a good idea to restrict it to 14

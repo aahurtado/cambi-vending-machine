@@ -46,6 +46,15 @@ public class Product {
                 return nutrientGroup;
             }
         }
+        
         return null; // Group not found
+    }
+    @Override
+    public String toString() {
+        return "Product{" +
+                "gtinUpc='" + gtinUpc + '\'' +
+                ", productNutrientGroups=" + productNutrientsGroups +
+                ", productId=" + productId +
+                '}';
     }
 }
