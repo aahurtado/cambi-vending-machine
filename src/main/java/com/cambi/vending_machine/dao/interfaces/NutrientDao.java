@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface NutrientDao {
     void createNutrient(Nutrient nutrient);
-    Nutrient getNutrient(String name);
-    void updateNutrient(Nutrient nutrient);
-    void deleteNutrient(String name);
+    Nutrient getNutrient(String nutrientName);
+    void updateNutrient(Nutrient nutrientName);
+    void deleteNutrient(String nutrientName);
 
     List <Nutrient> getAllNutrients();
 

@@ -31,4 +31,9 @@ public class NutrientController {
         nutrientDao.updateNutrient(nutrient);
     }
 
+    @DeleteMapping
+    public void deleteNutrient(@RequestParam String nutrientName) {
+        nutrientDao.deleteNutrient(nutrientName);
+    }
+
 }

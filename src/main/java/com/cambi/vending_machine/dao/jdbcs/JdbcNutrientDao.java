@@ -45,8 +45,9 @@ public class JdbcNutrientDao implements NutrientDao {
     }
 
     @Override
-    public void deleteNutrient(String name) {
-
+    public void deleteNutrient(String nutrientName) {
+        String sql = "DELETE FROM nutrient WHERE nutrient_name = ?";
+        jdbcTemplate.update(sql, nutrientName);
     }
 
     @Override
