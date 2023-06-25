@@ -7,6 +7,5 @@ import java.util.ArrayList;
 public class NutrientGroup {
     private int nutrientGroupId;
     private String nutrientGroupName;
-
     private ArrayList<Nutrient> nutrients = new ArrayList<>();
 }
