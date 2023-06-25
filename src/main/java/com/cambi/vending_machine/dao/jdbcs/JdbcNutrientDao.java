@@ -18,7 +18,12 @@ public class JdbcNutrientDao implements NutrientDao {
     }
     @Override
     public void createNutrient(Nutrient nutrient) {
+        System.out.println("_________" + nutrient.toString());
 
+        String sql = "INSERT INTO nutrient" +
+                " (nutrient_name, unit, nutrient_group_name)" +
+                " VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnit(), nutrient.getNutrientGroupName());
     }
 
     @Override

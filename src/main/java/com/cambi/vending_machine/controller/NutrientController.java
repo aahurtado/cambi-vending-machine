@@ -3,6 +3,7 @@ package com.cambi.vending_machine.controller;
 
 import com.cambi.vending_machine.dao.interfaces.NutrientDao;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/nutrient")
@@ -15,12 +16,13 @@ public class NutrientController {
         this.nutrientDao = nutrientDao;
     }
     @PostMapping
-    public void createNutrient(Nutrient nutrient) {
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNutrient (@RequestBody Nutrient nutrient) {
+        nutrientDao.createNutrient(nutrient);
     }
 
     @GetMapping
-    public Nutrient getNutrient(String nutrientName) {
+    public Nutrient getNutrient(@RequestParam String nutrientName) {
         return nutrientDao.getNutrient(nutrientName);
     }
 

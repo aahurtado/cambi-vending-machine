@@ -38,4 +38,14 @@ public class Nutrient {
     public void setNutrientName(String nutrientName) {
         this.nutrientName = nutrientName;
     }
+
+    @Override
+    public String toString() {
+        return "Nutrient{" +
+                "nutrientName='" + nutrientName + '\'' +
+                ", unit='" + unit + '\'' +
+                ", nutrientGroupName='" + nutrientGroupName + '\'' +
+                '}';
+    }
+
 }
