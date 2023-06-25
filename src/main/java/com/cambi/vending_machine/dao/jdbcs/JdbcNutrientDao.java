@@ -38,7 +38,10 @@ public class JdbcNutrientDao implements NutrientDao {
 
     @Override
     public void updateNutrient(Nutrient nutrient) {
-
+        String sql ="UPDATE nutrient" +
+                " SET unit = ?, nutrient_group_name = ?" +
+                " WHERE nutrient_name = ?";
+        jdbcTemplate.update(sql, nutrient.getUnit(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
     }
 
     @Override

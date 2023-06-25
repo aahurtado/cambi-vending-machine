@@ -26,4 +26,9 @@ public class NutrientController {
         return nutrientDao.getNutrient(nutrientName);
     }
 
+    @PutMapping
+    public void updateNutrient(@RequestBody Nutrient nutrient) {
+        nutrientDao.updateNutrient(nutrient);
+    }
+
 }
