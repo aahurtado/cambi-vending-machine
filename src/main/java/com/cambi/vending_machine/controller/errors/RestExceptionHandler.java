@@ -4,6 +4,7 @@ import com.cambi.vending_machine.dao.exceptions.CreateException;
 import com.cambi.vending_machine.dao.exceptions.DeleteException;
 import com.cambi.vending_machine.dao.exceptions.GetException;
 import com.cambi.vending_machine.dao.exceptions.UpdateException;
+import org.postgresql.util.PSQLException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessException;
@@ -39,6 +40,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DeleteException.class)
     public ResponseEntity<Object> handleDeleteException(HttpServletRequest req, DeleteException e) {
+        String error = e.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST, error));
+    }
+
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<Object>  handlePSQLException(PSQLException e) {
         String error = e.getMessage();
         return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST, error));
     }

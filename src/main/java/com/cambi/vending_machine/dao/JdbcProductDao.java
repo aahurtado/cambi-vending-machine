@@ -1,8 +1,10 @@
 package com.cambi.vending_machine.dao;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import com.cambi.vending_machine.dao.exceptions.CreateException;
 import com.cambi.vending_machine.dao.exceptions.GetException;
+import com.cambi.vending_machine.dao.exceptions.UpdateException;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import com.cambi.vending_machine.model.product.Product;
 import com.cambi.vending_machine.model.product.ProductNutrient;
@@ -10,9 +12,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 
-import javax.sound.midi.Soundbank;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,6 +31,7 @@ public class JdbcProductDao implements ProductDao{
 
     //TODO add two phase transaction
     @Override
+    @Transactional
     public void createProduct(Product product) {
         String sql =
                 "INSERT INTO product ( gtin_upc, publication_date, modified_date, brand_owner, food_category, description," +
@@ -54,30 +58,49 @@ public class JdbcProductDao implements ProductDao{
         }
     }
         @Override
-    public Product getProductByUpc(String gtinUpc) {
+    public Product getProductByUpc(String gtinUpc) throws GetException {
+
         String sql = "SELECT product_id, gtin_upc, publication_date, modified_date, brand_owner, food_category, description," +
                 " household_serving_full_text, serving_size_unit, serving_size" +
                 " FROM product WHERE gtin_upc = ?";
         Product product = null;
+
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gtinUpc);
         if (results.next()) {
             product = mapRowToProduct(results);
         }
-            System.out.println(product.toString());
-        System.out.println("product id " + product.getProductId());
+
         sql = "SELECT amount, nutrient_name, product_id FROM product_nutrient WHERE product_id = ?";
-        //TODO add error handling in this
-        assert product != null;
-        results = jdbcTemplate.queryForRowSet(sql, product.getProductId());
-        while (results.next()) {
-            ProductNutrient productNutrient = mapRowToProductNutrient(results);
-            product.getProductNutrients().add(productNutrient);
+        if (product != null) {
+            results = jdbcTemplate.queryForRowSet(sql, product.getProductId());
+            while (results.next()) {
+                ProductNutrient productNutrient = mapRowToProductNutrient(results);
+                product.getProductNutrients().add(productNutrient);
+            }
+            return product;
         }
-        return product;
+        throw new GetException("Unable to get product");
     }
     @Override
     public void updateProduct(Product product) {
-
+        String sql =
+                "UPDATE product SET gtin_upc = ?, modified_date = ?, brand_owner = ?, food_category = ?, description = ?," +
+                        " household_serving_full_text = ?, serving_size_unit = ?, serving_size = ?" +
+                        " WHERE product_id = ?";
+        try {
+            jdbcTemplate.update(sql,
+                product.getGtinUpc(),
+                getCurrentTimeStamp(),
+                product.getBrandOwner(),
+                product.getFoodCategory(),
+                product.getDescription(),
+                product.getHouseHoldServingFullText(),
+                product.getServingSizeUnit(),
+                product.getServingSize(),
+                product.getProductId());
+        } catch (DataAccessException e) {
+            throw new UpdateException("Unable to update product");
+        }
     }
 
     @Override

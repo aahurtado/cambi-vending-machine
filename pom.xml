@@ -53,6 +53,12 @@
 			<version>3.0.0</version>
 		</dependency>
 		<!-- Swagger Dependencies - End -->
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.22</version>
+		</dependency>
 	</dependencies>
 
 	<build>

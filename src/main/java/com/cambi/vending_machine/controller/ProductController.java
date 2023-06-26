@@ -19,9 +19,8 @@ public class ProductController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean createProduct (@RequestBody Product product) {
+    public void createProduct (@RequestBody Product product) {
         productDao.createProduct(product);
-        return true;
     }
 
     @GetMapping
@@ -29,14 +28,13 @@ public class ProductController {
         return productDao.getProductByUpc(gtinUpc);
     }
 
-    public boolean updateProduct (@RequestBody Product product) {
+    @PutMapping
+    public void updateProduct (@RequestBody Product product) {
         productDao.updateProduct(product);
-        return true;
     }
     @DeleteMapping
-    public boolean deleteProduct (@RequestParam String gtinUpc) {
+    public void deleteProduct (@RequestParam String gtinUpc) {
         productDao.deleteProductByUpc(gtinUpc);
-        return true;
     }
 }
 
