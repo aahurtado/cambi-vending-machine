@@ -11,9 +11,7 @@ CREATE TABLE unit (
 
 
 CREATE TABLE nutrient_group (
-    nutrient_group_name varchar(20) PRIMARY KEY,
-    weight DECIMAL(4, 4),
-    CONSTRAINT check_decimal_range CHECK (weight > 0 AND weight < 1)
+    nutrient_group_name varchar(20) PRIMARY KEY
 );
 
 CREATE TABLE nutrient (
@@ -50,10 +48,7 @@ CREATE TABLE product_nutrient(
 );
 
 INSERT INTO unit (unit_name, symbol) VALUES ('grams', 'g');
+INSERT INTO nutrient_group (nutrient_group_name) VALUES ('macro')
 
 INSERT INTO product (gtin_upc, publication_date, modified_date, brand_owner, food_category, description, household_serving_full_text, serving_size_unit, serving_size)
 VALUES ('1234567890123', '2022-06-01', '2022-05-15', 'ABC Company', 'Food', 'Sample Product', '2 slices', 'grams', 100);
-
-SELECT * FROM product;
-
-
