@@ -23,11 +23,11 @@ public class JdbcNutrientDao implements NutrientDao {
     @Override
     public void createNutrient(Nutrient nutrient) {
         String sql = "INSERT INTO nutrient" +
-                " (nutrient_name, unit, nutrient_group_name)" +
+                " (nutrient_name, unit_name, nutrient_group_name)" +
                 " VALUES (?, ?, ?)";
 
         try {
-            jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnit(), nutrient.getNutrientGroupName());
+            jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnitName(), nutrient.getNutrientGroupName());
         } catch (DataAccessException e) {
             throw new CreateException(e);
         }
@@ -35,7 +35,7 @@ public class JdbcNutrientDao implements NutrientDao {
 
     @Override
     public Nutrient getNutrient(String nutrientName) {
-        String sql = "SELECT nutrient_name, unit, nutrient_group_name FROM nutrient WHERE nutrient_name = ?";
+        String sql = "SELECT nutrient_name, unit_name, nutrient_group_name FROM nutrient WHERE nutrient_name = ?";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, nutrientName);
             if (results.next()) {
@@ -53,10 +53,10 @@ public class JdbcNutrientDao implements NutrientDao {
     @Override
     public void updateNutrient(Nutrient nutrient) {
         String sql ="UPDATE nutrient" +
-                " SET unit = ?, nutrient_group_name = ?" +
+                " SET unit_name = ?, nutrient_group_name = ?" +
                 " WHERE nutrient_name = ?";
         try {
-            jdbcTemplate.update(sql, nutrient.getUnit(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
+            jdbcTemplate.update(sql, nutrient.getUnitName(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
         } catch (DataAccessException e) {
             throw new CreateException(e);
         }
@@ -80,7 +80,7 @@ public class JdbcNutrientDao implements NutrientDao {
     private Nutrient mapRowToNutrient(SqlRowSet rs) {
         Nutrient nutrient = new Nutrient();
         nutrient.setNutrientName(rs.getString("nutrient_name"));
-        nutrient.setUnit(rs.getString("unit"));
+        nutrient.setUnitName(rs.getString("unit_name"));
         nutrient.setNutrientGroupName(rs.getString("nutrient_group_name"));
         return nutrient;
     }

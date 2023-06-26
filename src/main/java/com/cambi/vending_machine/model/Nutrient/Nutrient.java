@@ -4,23 +4,23 @@ import java.util.ArrayList;
 
 public class Nutrient {
     private String nutrientName;
-    private String unit;
+    private String unitName;
 
     private String nutrientGroupName;
     public Nutrient() {};
 
     public Nutrient(String nutrientName, String unit, String nutrientGroupName) {
         this.nutrientName = nutrientName;
-        this.unit = unit;
+        this.unitName = unit;
         this.nutrientName = nutrientName;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getUnitName() {
+        return unitName;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setUnitName(String unit) {
+        this.unitName = unit;
     }
 
     public String getNutrientGroupName() {
@@ -43,7 +43,7 @@ public class Nutrient {
     public String toString() {
         return "Nutrient{" +
                 "nutrientName='" + nutrientName + '\'' +
-                ", unit='" + unit + '\'' +
+                ", unit='" + unitName + '\'' +
                 ", nutrientGroupName='" + nutrientGroupName + '\'' +
                 '}';
     }

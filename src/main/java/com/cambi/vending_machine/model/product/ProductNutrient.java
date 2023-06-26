@@ -6,32 +6,43 @@ import java.math.BigDecimal;
 
 import java.math.BigDecimal;
 
-public class ProductNutrient extends Nutrient {
+public class ProductNutrient {
+
+    private String nutrientName;
     private BigDecimal amount;
+
+    private int productId;
 
     public ProductNutrient() {};
 
-    public ProductNutrient(String nutrientName, String unit, String nutrientGroupName, BigDecimal amount) {
-        super(nutrientName, unit, nutrientGroupName);
+    public ProductNutrient(String nutrientName, BigDecimal amount, int productId) {
+        this.nutrientName = nutrientName;
         this.amount = amount;
+        this.productId = productId;
     }
 
     public BigDecimal getAmount() {
         return amount;
     }
 
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
-    @Override
-    public String toString() {
-        return "ProductNutrient{" +
-                "amount=" + amount +
-                ", nutrientName='" + getNutrientName() + '\'' +
-                ", unit='" + getUnit() + '\'' +
-                ", nutrientGroupName='" + getNutrientGroupName() + '\'' +
-                '}';
+    public void setNutrientName(String nutrientName) {
+        this.nutrientName = nutrientName;
+    }
+
+    public String getNutrientName() {
+        return nutrientName;
     }
 }
 
