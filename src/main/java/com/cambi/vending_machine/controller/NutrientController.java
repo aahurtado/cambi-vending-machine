@@ -30,21 +30,13 @@ public class NutrientController {
     }
 
     @PutMapping
-    public boolean updateNutrient(@RequestBody Nutrient nutrient) throws Exception {
-        try {
+    public void updateNutrient(@RequestBody Nutrient nutrient) throws Exception {
             nutrientDao.updateNutrient(nutrient);
-        } catch (UpdateException e) {
-            throw new Exception("here is my message");
-        }
-        return false;
-
-
     }
 
     @DeleteMapping
-    public boolean deleteNutrient(@RequestParam String nutrientName) {
+    public void deleteNutrient(@RequestParam String nutrientName) {
         nutrientDao.deleteNutrient(nutrientName);
-        return true;
     }
 
 }

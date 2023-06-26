@@ -3,6 +3,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import com.cambi.vending_machine.dao.exceptions.CreateException;
+import com.cambi.vending_machine.dao.exceptions.DeleteException;
 import com.cambi.vending_machine.dao.exceptions.GetException;
 import com.cambi.vending_machine.dao.exceptions.UpdateException;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
@@ -49,13 +50,19 @@ public class JdbcProductDao implements ProductDao{
             product.getDescription(), product.getHouseHoldServingFullText(), product.getServingSizeUnit(),
             product.getServingSize());
         } catch (DataAccessException e) {
-            throw new CreateException(e);
+            throw new CreateException("Unable to create product");
         }
         sql = "INSERT INTO product_nutrient (amount, nutrient_name, product_id) VALUES (?, ?, ?);";
 
-        for (ProductNutrient productNutrient: product.getProductNutrients()) {
-            jdbcTemplate.update(sql, productNutrient.getAmount(), productNutrient.getNutrientName(), productId);
+        try {
+            for (ProductNutrient productNutrient : product.getProductNutrients()) {
+                jdbcTemplate.update(sql, productNutrient.getAmount(), productNutrient.getNutrientName(), productId);
+            }
         }
+        catch(DataAccessException e) {
+            throw new CreateException("Unable to create product");
+        }
+
     }
         @Override
     public Product getProductByUpc(String gtinUpc) throws GetException {
@@ -79,9 +86,10 @@ public class JdbcProductDao implements ProductDao{
             }
             return product;
         }
-        throw new GetException("Unable to get product");
+        throw new GetException("Product not found");
     }
     @Override
+    @Transactional
     public void updateProduct(Product product) {
         String sql =
                 "UPDATE product SET gtin_upc = ?, modified_date = ?, brand_owner = ?, food_category = ?, description = ?," +
@@ -101,11 +109,33 @@ public class JdbcProductDao implements ProductDao{
         } catch (DataAccessException e) {
             throw new UpdateException("Unable to update product");
         }
+
+        sql = "UPDATE product_nutrient SET amount = ?, nutrient_name = ? WHERE product_id = ?";
+
+        try {
+            for (ProductNutrient productNutrient : product.getProductNutrients()) {
+                jdbcTemplate.update(sql,
+                        productNutrient.getAmount(),
+                        productNutrient.getNutrientName(),
+                        product.getProductId());
+            }
+        } catch (DataAccessException e) {
+            throw new UpdateException("Unable to update product");
+        }
+
     }
 
+    @Transactional
     @Override
     public void deleteProductByUpc(String gtinUpc) {
-
+        String deleteProductSql = "DELETE FROM product WHERE gtin_upc = ?";
+        String deleteProductNutrientsSql = "DELETE FROM product_nutrient WHERE product_id IN (SELECT product_id FROM product WHERE gtin_upc = ?)";
+        try {
+            jdbcTemplate.update(deleteProductNutrientsSql, gtinUpc);
+            jdbcTemplate.update(deleteProductSql, gtinUpc);
+        } catch (DataAccessException e) {
+            throw new DeleteException("Unable to delete product");
+        }
     }
     private Product mapRowToProduct(SqlRowSet rs) {
         Product product = new Product();
