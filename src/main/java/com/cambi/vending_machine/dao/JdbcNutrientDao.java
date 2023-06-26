@@ -15,9 +15,7 @@ import java.util.List;
 
 @Component
 public class JdbcNutrientDao implements NutrientDao {
-
     private final JdbcTemplate jdbcTemplate;
-
     public JdbcNutrientDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -32,7 +30,6 @@ public class JdbcNutrientDao implements NutrientDao {
             throw new CreateException("Unable to create nutrient");
         }
     }
-
     @Override
     public Nutrient getNutrient(String nutrientName) throws GetException {
         String sql = "SELECT nutrient_name, unit_name, nutrient_group_name FROM nutrient WHERE nutrient_name = ?";
@@ -42,8 +39,6 @@ public class JdbcNutrientDao implements NutrientDao {
         }
         throw new GetException("Unable to get nutrient");
     }
-
-
     @Override
     public void updateNutrient(Nutrient nutrient) {
         String sql ="UPDATE nutrient" +
@@ -55,7 +50,6 @@ public class JdbcNutrientDao implements NutrientDao {
             throw new UpdateException("Unable to update nutrient");
         }
     }
-
     @Override
     public void deleteNutrient(String nutrientName) {
         String sql = "DELETE FROM nutrient WHERE nutrient_name = ?";
@@ -65,12 +59,6 @@ public class JdbcNutrientDao implements NutrientDao {
             throw new DeleteException("Unable to delete nutrient");
         }
     }
-
-    @Override
-    public List<Nutrient> getAllNutrients() {
-        return null;
-    }
-
     private Nutrient mapRowToNutrient(SqlRowSet rs) {
         Nutrient nutrient = new Nutrient();
         nutrient.setNutrientName(rs.getString("nutrient_name"));

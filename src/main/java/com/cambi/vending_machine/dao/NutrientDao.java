@@ -9,7 +9,4 @@ public interface NutrientDao {
     Nutrient getNutrient(String nutrientName);
     void updateNutrient(Nutrient nutrientName);
     void deleteNutrient(String nutrientName);
-
-    List <Nutrient> getAllNutrients();
-
 }
