@@ -56,7 +56,7 @@ public class JdbcProductDao implements ProductDao{
 
         @Override
     public Product getProductByUpc(String gtinUpc) {
-        
+
     }
 
     @Override

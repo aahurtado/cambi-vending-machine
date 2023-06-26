@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS nutrient CASCADE;
 DROP TABLE IF EXISTS nutrient_group CASCADE;
 DROP TABLE IF EXISTS unit CASCADE;
 DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS product_nutrient CASCADE;
 
 CREATE TABLE unit (
 	unit_name varchar(20) PRIMARY KEY,
@@ -28,8 +29,8 @@ CREATE TABLE product (
 	gtin_upc VARCHAR(20) UNIQUE NOT NULL,
 	publication_date TIMESTAMP,
 	modified_date TIMESTAMP,
-	brandOwner VARCHAR(100),
-	FoodCategory VARCHAR(100),
+	brand_owner VARCHAR(100),
+	Food_category VARCHAR(100),
 	description VARCHAR(500),
 	household_serving_full_text VARCHAR(500),
 	serving_size_unit varchar(20),
@@ -47,3 +48,12 @@ CREATE TABLE product_nutrient(
 	FOREIGN KEY (nutrient_name) REFERENCES nutrient (nutrient_name),
 	FOREIGN KEY (product_id) REFERENCES product (product_id)
 );
+
+INSERT INTO unit (unit_name, symbol) VALUES ('grams', 'g');
+
+INSERT INTO product (gtin_upc, publication_date, modified_date, brand_owner, food_category, description, household_serving_full_text, serving_size_unit, serving_size)
+VALUES ('1234567890123', '2022-06-01', '2022-05-15', 'ABC Company', 'Food', 'Sample Product', '2 slices', 'grams', 100);
+
+SELECT * FROM product;
+
+
