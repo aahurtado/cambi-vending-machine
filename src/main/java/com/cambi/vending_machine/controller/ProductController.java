@@ -23,7 +23,7 @@ public class ProductController {
         productDao.createProduct(product);
     }
 
-    @PutMapping
+    @GetMapping
     public Product getProduct (@RequestParam String gtinUpc) {
         return productDao.getProductByUpc(gtinUpc);
     }

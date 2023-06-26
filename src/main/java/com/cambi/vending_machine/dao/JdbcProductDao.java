@@ -2,6 +2,7 @@ package com.cambi.vending_machine.dao;
 import java.sql.Timestamp;
 
 import com.cambi.vending_machine.dao.exceptions.CreateException;
+import com.cambi.vending_machine.dao.exceptions.GetException;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import com.cambi.vending_machine.model.product.Product;
 import com.cambi.vending_machine.model.product.ProductNutrient;
@@ -51,13 +52,43 @@ public class JdbcProductDao implements ProductDao{
             jdbcTemplate.update(sql, productNutrient.getAmount(), productNutrient.getNutrientName(), productId);
         }
     }
-
-
         @Override
     public Product getProductByUpc(String gtinUpc) {
-        return null;
+        String sql = "SELECT product_id, gtin_upc, publication_date, modified_date, brand_owner, food_category, description," +
+                " household_serving_full_text, serving_size_unit, serving_size" +
+                " FROM product WHERE gtin_upc = ?";
+        Product product = null;
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gtinUpc);
+        if (results.next()) {
+            product = mapRowToProduct(results);
+        }
+            System.out.println(product.toString());
+        System.out.println("product id " + product.getProductId());
+        sql = "SELECT amount, nutrient_name FROM product_nutrient WHERE product_id = ?";
+        //TODO add error handling in this
+        assert product != null;
+        results = jdbcTemplate.queryForRowSet(sql, product.getProductId());
+
+        while (results.next()) {
+            ProductNutrient productNutrient = mapRowToProductNutrient(results);
+            System.out.println("added nutrient");
+            product.getProductNutrients().add(productNutrient);
+        }
+        return product;
     }
 
+
+
+//    public List<Group> getAllGroups() {
+//        List<Group> groups = new ArrayList<>();
+//        String sql = "SELECT * FROM groups ORDER BY group_name";
+//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//        while (results.next()) {
+//            Group group = mapRowToGroup(results);
+//            groups.add(group);
+//        }
+//        return groups;
+//    }
     @Override
     public void updateProduct(Product product) {
 
@@ -70,8 +101,11 @@ public class JdbcProductDao implements ProductDao{
 
     private Product mapRowToProduct(SqlRowSet rs) {
         Product product = new Product();
+        product.setProductId(rs.getInt("product_id"));
         product.setGtinUpc(rs.getString("gtin_upc"));
         product.setBrandOwner(rs.getString("brand_owner"));
+        product.setModifiedDate(rs.getTimestamp("modified_date"));
+        product.setPublicationDate(rs.getTimestamp("publication_date"));
         product.setFoodCategory(rs.getString("food_category"));
         product.setDescription(rs.getString("description"));
         product.setHouseHoldServingFullText(rs.getString("household_serving_full_text"));
@@ -84,7 +118,7 @@ public class JdbcProductDao implements ProductDao{
         ProductNutrient productNutrient= new ProductNutrient();
         productNutrient.setNutrientName(rs.getString("nutrient_name"));
         productNutrient.setAmount(rs.getBigDecimal("amount"));
-        productNutrient.setProductId(rs.getInt("product_id"));
+        //productNutrient.setProductId(rs.getInt("product_id"));
         return productNutrient;
     }
 
