@@ -25,6 +25,8 @@ public class JdbcProductDao implements ProductDao{
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    //TODO add two phase transaction
     @Override
     public void createProduct(Product product) {
         String sql =
@@ -82,7 +84,6 @@ public class JdbcProductDao implements ProductDao{
     public void deleteProductByUpc(String gtinUpc) {
 
     }
-
     private Product mapRowToProduct(SqlRowSet rs) {
         Product product = new Product();
         product.setProductId(rs.getInt("product_id"));
@@ -97,7 +98,6 @@ public class JdbcProductDao implements ProductDao{
         product.setServingSize(rs.getBigDecimal("serving_size"));
         return product;
     }
-
     private ProductNutrient mapRowToProductNutrient(SqlRowSet rs) {
         ProductNutrient productNutrient= new ProductNutrient();
         productNutrient.setNutrientName(rs.getString("nutrient_name"));
@@ -105,7 +105,6 @@ public class JdbcProductDao implements ProductDao{
         productNutrient.setProductId(rs.getInt("product_id"));
         return productNutrient;
     }
-
     private Timestamp getCurrentTimeStamp() {
         Date date = new Date();
         // Create a SimpleDateFormat object
@@ -117,16 +116,3 @@ public class JdbcProductDao implements ProductDao{
         return currentTimestamp;
     }
 }
-
-
-//    @Override
-//    public List<Group> getAllGroups() {
-//        List<Group> groups = new ArrayList<>();
-//        String sql = "SELECT * FROM groups ORDER BY group_name";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-//        while (results.next()) {
-//            Group group = mapRowToGroup(results);
-//            groups.add(group);
-//        }
-//        return groups;
-//    }

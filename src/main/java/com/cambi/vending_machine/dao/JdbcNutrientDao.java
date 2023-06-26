@@ -4,6 +4,7 @@ import com.cambi.vending_machine.dao.exceptions.CreateException;
 import com.cambi.vending_machine.dao.exceptions.DeleteException;
 import com.cambi.vending_machine.dao.exceptions.GetException;
 import com.cambi.vending_machine.dao.NutrientDao;
+import com.cambi.vending_machine.dao.exceptions.UpdateException;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,32 +23,24 @@ public class JdbcNutrientDao implements NutrientDao {
     }
     @Override
     public void createNutrient(Nutrient nutrient) {
-        System.out.println(nutrient.getUnitName());
         String sql = "INSERT INTO nutrient" +
                 " (nutrient_name, unit_name, nutrient_group_name)" +
                 " VALUES (?, ?, ?)";
-
         try {
             jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnitName(), nutrient.getNutrientGroupName());
         } catch (DataAccessException e) {
-            throw new CreateException(e);
+            throw new CreateException("Unable to create nutrient");
         }
     }
 
     @Override
-    public Nutrient getNutrient(String nutrientName) {
+    public Nutrient getNutrient(String nutrientName) throws GetException {
         String sql = "SELECT nutrient_name, unit_name, nutrient_group_name FROM nutrient WHERE nutrient_name = ?";
-        try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, nutrientName);
-            if (results.next()) {
-                return mapRowToNutrient(results);
-            }
-            // this return null is reached if the object is not found
-            //TODO implement logic for this in controller
-            return null;
-        } catch (DataAccessException e) {
-            throw new GetException(e);
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, nutrientName);
+        if (results.next()) {
+            return mapRowToNutrient(results);
         }
+        throw new GetException("Unable to get nutrient");
     }
 
 
@@ -59,7 +52,7 @@ public class JdbcNutrientDao implements NutrientDao {
         try {
             jdbcTemplate.update(sql, nutrient.getUnitName(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
         } catch (DataAccessException e) {
-            throw new CreateException(e);
+            throw new UpdateException("Unable to update nutrient");
         }
     }
 
@@ -69,7 +62,7 @@ public class JdbcNutrientDao implements NutrientDao {
         try {
             jdbcTemplate.update(sql, nutrientName);
         } catch (DataAccessException e) {
-            throw new DeleteException(e);
+            throw new DeleteException("Unable to delete nutrient");
         }
     }
 
