@@ -44,6 +44,15 @@ public class ProductNutrient {
     public String getNutrientName() {
         return nutrientName;
     }
+
+    @Override
+    public String toString() {
+        return "ProductNutrient{" +
+                "nutrientName='" + nutrientName + '\'' +
+                ", amount=" + amount +
+                ", productId=" + productId +
+                '}';
+    }
 }
 
 

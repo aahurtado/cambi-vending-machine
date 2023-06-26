@@ -9,9 +9,9 @@ public class Nutrient {
     private String nutrientGroupName;
     public Nutrient() {};
 
-    public Nutrient(String nutrientName, String unit, String nutrientGroupName) {
+    public Nutrient(String nutrientName, String unitName) {
         this.nutrientName = nutrientName;
-        this.unitName = unit;
+        this.unitName = unitName;
         this.nutrientName = nutrientName;
     }
 
@@ -44,7 +44,6 @@ public class Nutrient {
         return "Nutrient{" +
                 "nutrientName='" + nutrientName + '\'' +
                 ", unit='" + unitName + '\'' +
-                ", nutrientGroupName='" + nutrientGroupName + '\'' +
                 '}';
     }
 

@@ -17,8 +17,9 @@ public class NutrientController {
     }
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createNutrient (@RequestBody Nutrient nutrient) {
+    public boolean createNutrient (@RequestBody Nutrient nutrient) {
         nutrientDao.createNutrient(nutrient);
+        return true;
     }
 
     @GetMapping
@@ -27,13 +28,15 @@ public class NutrientController {
     }
 
     @PutMapping
-    public void updateNutrient(@RequestBody Nutrient nutrient) {
+    public boolean updateNutrient(@RequestBody Nutrient nutrient) {
         nutrientDao.updateNutrient(nutrient);
+        return true;
     }
 
     @DeleteMapping
-    public void deleteNutrient(@RequestParam String nutrientName) {
+    public boolean deleteNutrient(@RequestParam String nutrientName) {
         nutrientDao.deleteNutrient(nutrientName);
+        return true;
     }
 
 }

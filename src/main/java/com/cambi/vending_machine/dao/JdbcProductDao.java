@@ -12,9 +12,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 
-import java.text.DateFormat;
+import javax.sound.midi.Soundbank;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -64,31 +63,16 @@ public class JdbcProductDao implements ProductDao{
         }
             System.out.println(product.toString());
         System.out.println("product id " + product.getProductId());
-        sql = "SELECT amount, nutrient_name FROM product_nutrient WHERE product_id = ?";
+        sql = "SELECT amount, nutrient_name, product_id FROM product_nutrient WHERE product_id = ?";
         //TODO add error handling in this
         assert product != null;
         results = jdbcTemplate.queryForRowSet(sql, product.getProductId());
-
         while (results.next()) {
             ProductNutrient productNutrient = mapRowToProductNutrient(results);
-            System.out.println("added nutrient");
             product.getProductNutrients().add(productNutrient);
         }
         return product;
     }
-
-
-
-//    public List<Group> getAllGroups() {
-//        List<Group> groups = new ArrayList<>();
-//        String sql = "SELECT * FROM groups ORDER BY group_name";
-//        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-//        while (results.next()) {
-//            Group group = mapRowToGroup(results);
-//            groups.add(group);
-//        }
-//        return groups;
-//    }
     @Override
     public void updateProduct(Product product) {
 
@@ -118,7 +102,7 @@ public class JdbcProductDao implements ProductDao{
         ProductNutrient productNutrient= new ProductNutrient();
         productNutrient.setNutrientName(rs.getString("nutrient_name"));
         productNutrient.setAmount(rs.getBigDecimal("amount"));
-        //productNutrient.setProductId(rs.getInt("product_id"));
+        productNutrient.setProductId(rs.getInt("product_id"));
         return productNutrient;
     }
 
