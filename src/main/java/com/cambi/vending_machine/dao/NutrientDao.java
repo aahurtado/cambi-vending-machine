@@ -1,4 +1,4 @@
-package com.cambi.vending_machine.dao.interfaces;
+package com.cambi.vending_machine.dao;
 
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import com.cambi.vending_machine.model.Nutrient.NutrientGroup;

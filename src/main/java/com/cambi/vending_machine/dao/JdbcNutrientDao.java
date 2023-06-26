@@ -1,7 +1,11 @@
-package com.cambi.vending_machine.dao.jdbcs;
+package com.cambi.vending_machine.dao;
 
-import com.cambi.vending_machine.dao.interfaces.NutrientDao;
+import com.cambi.vending_machine.dao.exceptions.CreateException;
+import com.cambi.vending_machine.dao.exceptions.DeleteException;
+import com.cambi.vending_machine.dao.exceptions.GetException;
+import com.cambi.vending_machine.dao.NutrientDao;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -18,36 +22,54 @@ public class JdbcNutrientDao implements NutrientDao {
     }
     @Override
     public void createNutrient(Nutrient nutrient) {
-        System.out.println("_________" + nutrient.toString());
-
         String sql = "INSERT INTO nutrient" +
                 " (nutrient_name, unit, nutrient_group_name)" +
                 " VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnit(), nutrient.getNutrientGroupName());
+
+        try {
+            jdbcTemplate.update(sql, nutrient.getNutrientName(), nutrient.getUnit(), nutrient.getNutrientGroupName());
+        } catch (DataAccessException e) {
+            throw new CreateException(e);
+        }
     }
 
     @Override
     public Nutrient getNutrient(String nutrientName) {
         String sql = "SELECT nutrient_name, unit, nutrient_group_name FROM nutrient WHERE nutrient_name = ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, nutrientName);
-        if (results.next()) {
-            return mapRowToNutrient(results);
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, nutrientName);
+            if (results.next()) {
+                return mapRowToNutrient(results);
+            }
+            // this return null is reached if the object is not found
+            //TODO implement logic for this in controller
+            return null;
+        } catch (DataAccessException e) {
+            throw new GetException(e);
         }
-       return null;
     }
+
 
     @Override
     public void updateNutrient(Nutrient nutrient) {
         String sql ="UPDATE nutrient" +
                 " SET unit = ?, nutrient_group_name = ?" +
                 " WHERE nutrient_name = ?";
-        jdbcTemplate.update(sql, nutrient.getUnit(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
+        try {
+            jdbcTemplate.update(sql, nutrient.getUnit(), nutrient.getNutrientGroupName(), nutrient.getNutrientName());
+        } catch (DataAccessException e) {
+            throw new CreateException(e);
+        }
     }
 
     @Override
     public void deleteNutrient(String nutrientName) {
         String sql = "DELETE FROM nutrient WHERE nutrient_name = ?";
-        jdbcTemplate.update(sql, nutrientName);
+        try {
+            jdbcTemplate.update(sql, nutrientName);
+        } catch (DataAccessException e) {
+            throw new DeleteException(e);
+        }
     }
 
     @Override

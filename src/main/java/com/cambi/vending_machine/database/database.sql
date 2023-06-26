@@ -1,9 +1,13 @@
-DROP TABLE IF EXISTS nutrient_range CASCADE;
-DROP TABLE IF EXISTS preference_priority_nutrient CASCADE;
-DROP TABLE IF EXISTS preference_priority CASCADE;
 DROP TABLE IF EXISTS nutrient CASCADE;
 DROP TABLE IF EXISTS nutrient_group CASCADE;
-DROP TABLE IF EXISTS preference CASCADE;
+DROP TABLE IF EXISTS unit CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+
+CREATE TABLE unit (
+	unit_name varchar(20) PRIMARY KEY,
+	symbol varchar(5) NOT NULL
+);
+
 
 CREATE TABLE nutrient_group (
     nutrient_group_name varchar(20) PRIMARY KEY,
@@ -13,36 +17,33 @@ CREATE TABLE nutrient_group (
 
 CREATE TABLE nutrient (
     nutrient_name VARCHAR(50) PRIMARY KEY,
-    unit varchar(10),
+    unit_name varchar(20),
     nutrient_group_name varchar(20) NOT NULL,
-    FOREIGN KEY (nutrient_group_name) REFERENCES nutrient_group (nutrient_group_name)
+    FOREIGN KEY (nutrient_group_name) REFERENCES nutrient_group (nutrient_group_name),
+	FOREIGN KEY (unit_name) REFERENCES unit (unit_name)
 );
 
-CREATE TABLE preference (
-    preference_id SERIAL PRIMARY KEY,
-    preference_name VARCHAR(50) NOT NULL
+CREATE TABLE product (
+	product_id SERIAL PRIMARY KEY,
+	gtin_upc VARCHAR(20) UNIQUE NOT NULL,
+	publication_date TIMESTAMP,
+	modified_date TIMESTAMP,
+	brandOwner VARCHAR(100),
+	FoodCategory VARCHAR(100),
+	description VARCHAR(500),
+	household_serving_full_text VARCHAR(500),
+	serving_size_unit varchar(20),
+	serving_size DECIMAL (8, 4),
+	CONSTRAINT check_decimal_range CHECK (serving_size > 0),
+	FOREIGN KEY (serving_size_unit) REFERENCES unit(unit_name)
 );
+--need to add something to deal with ids from diferent data sources
 
-CREATE TABLE preference_priority (
-    preference_priority_id SERIAL PRIMARY KEY,
-    priority_level int NOT NULL,
-    preference_id INT NOT NULL,
-    FOREIGN KEY (preference_id) REFERENCES preference (preference_id)
-);
-
-CREATE TABLE preference_priority_nutrient (
-    preference_priority_nutrient_id SERIAL PRIMARY KEY,
-    preference_priority_id INT NOT NULL,
-    preference_nutrient_id INT NOT NULL,
-    FOREIGN KEY (preference_priority_id) REFERENCES preference_priority (preference_priority_id)
-);
-
-CREATE TABLE nutrient_range (
-    nutrient_range_id SERIAL PRIMARY KEY,
-    x_min DECIMAL(7, 2),
-    y_min DECIMAL(7, 2),
-    x_max DECIMAL(7, 2),
-    y_max DECIMAL(7, 2),
-    preference_priority_nutrient_id INT NOT NULL,
-    FOREIGN KEY (preference_priority_nutrient_id) REFERENCES preference_priority_nutrient (preference_priority_nutrient_id)
+CREATE TABLE product_nutrient(
+	amount DECIMAL (8, 4),
+	CONSTRAINT check_decimal_range CHECK (amount > 0),
+	nutrient_name varchar(50) NOT NULL,
+	product_id INT NOT NULL,
+	FOREIGN KEY (nutrient_name) REFERENCES nutrient (nutrient_name),
+	FOREIGN KEY (product_id) REFERENCES product (product_id)
 );

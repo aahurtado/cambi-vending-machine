@@ -1,7 +1,7 @@
 package com.cambi.vending_machine.controller;
 
 
-import com.cambi.vending_machine.dao.interfaces.NutrientDao;
+import com.cambi.vending_machine.dao.NutrientDao;
 import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
