@@ -24,8 +24,8 @@ public class JdbcDatabasesMangerDao implements DatabaseMangerDao{
         jdbcTemplate.execute("SET CONSTRAINTS ALL DEFERRED");
 
         // Truncate each table in the database
-        jdbcTemplate.execute("TRUNCATE TABLE unit CASCADE");
-        jdbcTemplate.execute("TRUNCATE TABLE nutrient_group CASCADE");
+//        jdbcTemplate.execute("TRUNCATE TABLE unit CASCADE");
+//        jdbcTemplate.execute("TRUNCATE TABLE nutrient_group CASCADE");
         jdbcTemplate.execute("TRUNCATE TABLE nutrient CASCADE");
         jdbcTemplate.execute("TRUNCATE TABLE product CASCADE");
         jdbcTemplate.execute("TRUNCATE TABLE product_nutrient CASCADE");
