@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ProductController {
 
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     ProductController(ProductDao productDao) {
         this.productDao = productDao;

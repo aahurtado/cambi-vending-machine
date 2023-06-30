@@ -9,11 +9,11 @@ import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/nutrient")
+@RequestMapping("/nutrients")
 @RestController
 public class NutrientController {
 
-    private NutrientDao nutrientDao;
+    private final NutrientDao nutrientDao;
 
     NutrientController(NutrientDao nutrientDao) {
         this.nutrientDao = nutrientDao;
