@@ -17,24 +17,26 @@ public class ProductController {
     ProductController(ProductDao productDao) {
         this.productDao = productDao;
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct (@RequestBody Product product) {
+    public void createProduct(@RequestBody Product product) {
         productDao.createProduct(product);
     }
-
-    @GetMapping
-    public Product getProduct (@RequestParam String gtinUpc) {
-        return productDao.getProductByUpc(gtinUpc);
-    }
-
-    @PutMapping
-    public void updateProduct (@RequestBody Product product) {
-        productDao.updateProduct(product);
-    }
-    @DeleteMapping
-    public void deleteProduct (@RequestParam String gtinUpc) {
-        productDao.deleteProductByUpc(gtinUpc);
-    }
 }
+
+//    @GetMapping
+//    public Product getProduct (@RequestParam String gtinUpc) {
+//        return productDao.getProductByUpc(gtinUpc);
+//    }
+//
+//    @PutMapping
+//    public void updateProduct (@RequestBody Product product) {
+//        productDao.updateProduct(product);
+//    }
+//    @DeleteMapping
+//    public void deleteProduct (@RequestParam String gtinUpc) {
+//        productDao.deleteProductByUpc(gtinUpc);
+//    }
+//}
 

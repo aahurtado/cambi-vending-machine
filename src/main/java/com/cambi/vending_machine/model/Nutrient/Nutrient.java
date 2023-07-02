@@ -72,4 +72,16 @@ public class Nutrient {
     public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
+
+    @Override
+    public String toString() {
+        return "Nutrient{" +
+                "nutrientIdPk=" + nutrientIdPk +
+                ", nutrientId=" + nutrientId +
+                ", nutrientNumber='" + nutrientNumber + '\'' +
+                ", nutrientName='" + nutrientName + '\'' +
+                ", nutrientRank=" + nutrientRank +
+                ", unitName='" + unitName + '\'' +
+                '}';
+    }
 }

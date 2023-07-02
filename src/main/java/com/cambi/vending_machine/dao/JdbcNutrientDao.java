@@ -21,11 +21,12 @@ public class JdbcNutrientDao implements NutrientDao {
     }
     @Override
     public void createNutrient(Nutrient nutrient) {
+        System.out.println(nutrient.toString());
         String sql = "INSERT INTO nutrient" +
                 " (nutrient_id, nutrient_number, nutrient_name, nutrient_rank, unit_name)" +
                 " VALUES (?, ?, ?, ?, ?)";
         try {
-            jdbcTemplate.update(sql, nutrient.getNutrientIdPk(), nutrient.getNutrientId(), nutrient.getNutrientNumber(),
+            jdbcTemplate.update(sql, nutrient.getNutrientId(), nutrient.getNutrientNumber(),
                     nutrient.getNutrientName(), nutrient.getNutrientRank(), nutrient.getUnitName());
         } catch (DataAccessException e) {
             throw new CreateException("Unable to create nutrient", e);

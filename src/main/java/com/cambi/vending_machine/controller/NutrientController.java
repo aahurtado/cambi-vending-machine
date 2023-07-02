@@ -23,17 +23,17 @@ public class NutrientController {
     public void createNutrient (@RequestBody Nutrient nutrient) {
             nutrientDao.createNutrient(nutrient);
     }
-    @GetMapping
-    public Nutrient getNutrient(@RequestParam String nutrientName) throws Exception {
-            return nutrientDao.getNutrient(nutrientName);
-    }
-    @PutMapping
-    public void updateNutrient(@RequestBody Nutrient nutrient) throws Exception {
-            nutrientDao.updateNutrient(nutrient);
-    }
-    @DeleteMapping
-    public void deleteNutrient(@RequestParam String nutrientName) {
-        nutrientDao.deleteNutrient(nutrientName);
-    }
+//    @GetMapping
+//    public Nutrient getNutrient(@RequestParam String nutrientName) throws Exception {
+//            return nutrientDao.getNutrient(nutrientName);
+//    }
+//    @PutMapping
+//    public void updateNutrient(@RequestBody Nutrient nutrient) throws Exception {
+//            nutrientDao.updateNutrient(nutrient);
+//    }
+//    @DeleteMapping
+//    public void deleteNutrient(@RequestParam String nutrientName) {
+//        nutrientDao.deleteNutrient(nutrientName);
+//    }
 
 }
