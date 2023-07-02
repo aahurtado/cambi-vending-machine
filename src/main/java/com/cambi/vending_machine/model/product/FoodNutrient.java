@@ -1,3 +1,5 @@
+package com.cambi.vending_machine.model.product;
+
 public class FoodNutrient {
     private int foodNutrientId;
     private float amount;

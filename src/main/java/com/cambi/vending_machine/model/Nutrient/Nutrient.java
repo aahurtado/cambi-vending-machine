@@ -1,3 +1,5 @@
+package com.cambi.vending_machine.model.Nutrient;
+
 public class Nutrient {
     private int nutrientIdPk;
     private int nutrientId;
