@@ -1,34 +1,50 @@
-package com.cambi.vending_machine.model.Nutrient;
-
-import java.util.ArrayList;
-
 public class Nutrient {
+    private int nutrientIdPk;
+    private int nutrientId;
+    private String nutrientNumber;
     private String nutrientName;
+    private int nutrientRank;
     private String unitName;
 
-    private String nutrientGroupName;
-    public Nutrient() {};
+    // Constructors (optional)
 
-    public Nutrient(String nutrientName, String unitName) {
+    public Nutrient() {
+    }
+
+    public Nutrient(int nutrientIdPk, int nutrientId, String nutrientNumber, String nutrientName,
+                    int nutrientRank, String unitName) {
+        this.nutrientIdPk = nutrientIdPk;
+        this.nutrientId = nutrientId;
+        this.nutrientNumber = nutrientNumber;
         this.nutrientName = nutrientName;
+        this.nutrientRank = nutrientRank;
         this.unitName = unitName;
-        this.nutrientName = nutrientName;
     }
 
-    public String getUnitName() {
-        return unitName;
+    // Getters and Setters
+
+    public int getNutrientIdPk() {
+        return nutrientIdPk;
     }
 
-    public void setUnitName(String unit) {
-        this.unitName = unit;
+    public void setNutrientIdPk(int nutrientIdPk) {
+        this.nutrientIdPk = nutrientIdPk;
     }
 
-    public String getNutrientGroupName() {
-        return nutrientGroupName;
+    public int getNutrientId() {
+        return nutrientId;
     }
 
-    public void setNutrientGroupName(String nutrientGroupName) {
-        this.nutrientGroupName = nutrientGroupName;
+    public void setNutrientId(int nutrientId) {
+        this.nutrientId = nutrientId;
+    }
+
+    public String getNutrientNumber() {
+        return nutrientNumber;
+    }
+
+    public void setNutrientNumber(String nutrientNumber) {
+        this.nutrientNumber = nutrientNumber;
     }
 
     public String getNutrientName() {
@@ -39,12 +55,19 @@ public class Nutrient {
         this.nutrientName = nutrientName;
     }
 
-    @Override
-    public String toString() {
-        return "Nutrient{" +
-                "nutrientName='" + nutrientName + '\'' +
-                ", unit='" + unitName + '\'' +
-                '}';
+    public int getNutrientRank() {
+        return nutrientRank;
     }
 
+    public void setNutrientRank(int nutrientRank) {
+        this.nutrientRank = nutrientRank;
+    }
+
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
 }

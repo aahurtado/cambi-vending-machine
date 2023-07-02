@@ -1,14 +1,12 @@
 package com.cambi.vending_machine.dao;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import com.cambi.vending_machine.dao.exceptions.CreateException;
 import com.cambi.vending_machine.dao.exceptions.DeleteException;
 import com.cambi.vending_machine.dao.exceptions.GetException;
 import com.cambi.vending_machine.dao.exceptions.UpdateException;
-import com.cambi.vending_machine.model.Nutrient.Nutrient;
 import com.cambi.vending_machine.model.product.Product;
-import com.cambi.vending_machine.model.product.ProductNutrient;
+import com.cambi.vending_machine.model.product.FoodNutrient;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -55,7 +53,7 @@ public class JdbcProductDao implements ProductDao{
         sql = "INSERT INTO product_nutrient (amount, nutrient_name, product_id) VALUES (?, ?, ?);";
 
         try {
-            for (ProductNutrient productNutrient : product.getProductNutrients()) {
+            for (FoodNutrient productNutrient : product.getProductNutrients()) {
                 jdbcTemplate.update(sql, productNutrient.getAmount(), productNutrient.getNutrientName(), productId);
             }
         }
@@ -81,7 +79,7 @@ public class JdbcProductDao implements ProductDao{
         if (product != null) {
             results = jdbcTemplate.queryForRowSet(sql, product.getProductId());
             while (results.next()) {
-                ProductNutrient productNutrient = mapRowToProductNutrient(results);
+                FoodNutrient productNutrient = mapRowToProductNutrient(results);
                 product.getProductNutrients().add(productNutrient);
             }
             return product;
@@ -113,7 +111,7 @@ public class JdbcProductDao implements ProductDao{
         sql = "UPDATE product_nutrient SET amount = ?, nutrient_name = ? WHERE product_id = ?";
 
         try {
-            for (ProductNutrient productNutrient : product.getProductNutrients()) {
+            for (FoodNutrient productNutrient : product.getProductNutrients()) {
                 jdbcTemplate.update(sql,
                         productNutrient.getAmount(),
                         productNutrient.getNutrientName(),
@@ -151,8 +149,8 @@ public class JdbcProductDao implements ProductDao{
         product.setServingSize(rs.getBigDecimal("serving_size"));
         return product;
     }
-    private ProductNutrient mapRowToProductNutrient(SqlRowSet rs) {
-        ProductNutrient productNutrient= new ProductNutrient();
+    private FoodNutrient mapRowToProductNutrient(SqlRowSet rs) {
+        FoodNutrient productNutrient= new FoodNutrient();
         productNutrient.setNutrientName(rs.getString("nutrient_name"));
         productNutrient.setAmount(rs.getBigDecimal("amount"));
         productNutrient.setProductId(rs.getInt("product_id"));
