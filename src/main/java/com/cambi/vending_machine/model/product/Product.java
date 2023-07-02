@@ -7,120 +7,159 @@ import java.util.List;
 
 public class Product {
     private int productId;
-    private String gtinUpc;
-    private Date publicationDate;
-    private Date modifiedDate;
+    private int fdcId;
+    private String availableDate;
     private String brandOwner;
-    private String foodCategory;
+    private String dataSource;
     private String description;
-    private String houseHoldServingFullText;
+    private String gtinUpc;
+    private String householdServingFullText;
+    private String ingredients;
+    private String modifiedDate;
+    private String publicationDate;
+    private int servingSize;
     private String servingSizeUnit;
-    private BigDecimal servingSize;
+    private String brandedFoodCategory;
 
-    List<ProductNutrient> productNutrients = new ArrayList<>();
+    // Constructors (optional)
 
-    public Product () {};
-    public Product (int productId, String gtinUpc, Date publicationDate, Date modifiedDate,
-                    String brandOwner, String foodCategory, String description, String houseHoldServingFullText,
-                    String servingSizeUnit, BigDecimal ServingSize, List<ProductNutrient> productNutrients) {
+    public Product() {
+    }
+
+    public Product(int productId, int fdcId, String availableDate, String brandOwner, String dataSource,
+                   String description, String gtinUpc, String householdServingFullText, String ingredients,
+                   String modifiedDate, String publicationDate, int servingSize, String servingSizeUnit,
+                   String brandedFoodCategory) {
         this.productId = productId;
-        this.gtinUpc = gtinUpc;
-        this. publicationDate = publicationDate;
-        this.modifiedDate = modifiedDate;
+        this.fdcId = fdcId;
+        this.availableDate = availableDate;
         this.brandOwner = brandOwner;
-        this.foodCategory = foodCategory;
+        this.dataSource = dataSource;
         this.description = description;
-        this.houseHoldServingFullText = houseHoldServingFullText;
-        this.servingSizeUnit = servingSizeUnit;
-        this.servingSize = ServingSize;
-        this.productNutrients = productNutrients;
-
-    }
-    public String getGtinUpc() {
-        return gtinUpc;
-    }
-    public void setGtinUpc(String gtinUpc) {
         this.gtinUpc = gtinUpc;
+        this.householdServingFullText = householdServingFullText;
+        this.ingredients = ingredients;
+        this.modifiedDate = modifiedDate;
+        this.publicationDate = publicationDate;
+        this.servingSize = servingSize;
+        this.servingSizeUnit = servingSizeUnit;
+        this.brandedFoodCategory = brandedFoodCategory;
     }
+
+    // Getters and Setters
+
     public int getProductId() {
         return productId;
     }
+
     public void setProductId(int productId) {
         this.productId = productId;
     }
-    public BigDecimal getServingSize() {
-        return servingSize;
+
+    public int getFdcId() {
+        return fdcId;
     }
-    public Date getModifiedDate() {
-        return modifiedDate;
+
+    public void setFdcId(int fdcId) {
+        this.fdcId = fdcId;
     }
-    public Date getPublicationDate() {
-        return publicationDate;
+
+    public String getAvailableDate() {
+        return availableDate;
     }
+
+    public void setAvailableDate(String availableDate) {
+        this.availableDate = availableDate;
+    }
+
     public String getBrandOwner() {
         return brandOwner;
     }
-    public String getDescription() {
-        return description;
-    }
-    public String getFoodCategory() {
-        return foodCategory;
-    }
-    public String getHouseHoldServingFullText() {
-        return houseHoldServingFullText;
-    }
-    public String getServingSizeUnit() {
-        return servingSizeUnit;
-    }
+
     public void setBrandOwner(String brandOwner) {
         this.brandOwner = brandOwner;
     }
+
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
-    public void setFoodCategory(String foodCategory) {
-        this.foodCategory = foodCategory;
+
+    public String getGtinUpc() {
+        return gtinUpc;
     }
-    public void setHouseHoldServingFullText(String houseHoldServingFullText) {
-        this.houseHoldServingFullText = houseHoldServingFullText;
+
+    public void setGtinUpc(String gtinUpc) {
+        this.gtinUpc = gtinUpc;
     }
-    public void setModifiedDate(Date modifiedDate) {
+
+    public String getHouseholdServingFullText() {
+        return householdServingFullText;
+    }
+
+    public void setHouseholdServingFullText(String householdServingFullText) {
+        this.householdServingFullText = householdServingFullText;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
 
-    public void setServingSize(BigDecimal servingSize) {
+    public int getServingSize() {
+        return servingSize;
+    }
+
+    public void setServingSize(int servingSize) {
         this.servingSize = servingSize;
+    }
+
+    public String getServingSizeUnit() {
+        return servingSizeUnit;
     }
 
     public void setServingSizeUnit(String servingSizeUnit) {
         this.servingSizeUnit = servingSizeUnit;
     }
 
-    public List<ProductNutrient> getProductNutrients() {
-        return productNutrients;
+    public String getBrandedFoodCategory() {
+        return brandedFoodCategory;
     }
-    public void setProductNutrients(List<ProductNutrient> productNutrients) {
-        this.productNutrients = productNutrients;
-    }
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productId=" + productId +
-                ", gtinUpc='" + gtinUpc + '\'' +
-                ", publicationDate=" + publicationDate +
-                ", modifiedDate=" + modifiedDate +
-                ", brandOwner='" + brandOwner + '\'' +
-                ", foodCategory='" + foodCategory + '\'' +
-                ", description='" + description + '\'' +
-                ", houseHoldServingFullText='" + houseHoldServingFullText + '\'' +
-                ", servingSizeUnit='" + servingSizeUnit + '\'' +
-                ", servingSize=" + servingSize +
-                '}';
+
+    public void setBrandedFoodCategory(String brandedFoodCategory) {
+        this.brandedFoodCategory = brandedFoodCategory;
     }
 }
+
 
 

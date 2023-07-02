@@ -48,7 +48,4 @@ CREATE TABLE product_nutrient(
 );
 
 INSERT INTO unit (unit_name, symbol) VALUES ('grams', 'g');
-INSERT INTO nutrient_group (nutrient_group_name) VALUES ('macro')
-
-INSERT INTO product (gtin_upc, publication_date, modified_date, brand_owner, food_category, description, household_serving_full_text, serving_size_unit, serving_size)
-VALUES ('1234567890123', '2022-06-01', '2022-05-15', 'ABC Company', 'Food', 'Sample Product', '2 slices', 'grams', 100);
+INSERT INTO nutrient_group (nutrient_group_name) VALUES ('macro');
